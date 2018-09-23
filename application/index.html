@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hello OAuth0</title>
+</head>
+<body>
+  <button id="get">Get</button>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.0.0/polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0.0/dist/fetch.umd.min.js"></script>
+  <script>
+    (function () {
+      var ENDPOINT = 'http://localhost:8080';
+      var buttonEl = document.getElementById('get');
+      buttonEl.addEventListener('click', handleClick);
+      function handleClick() {
+        window.fetch(ENDPOINT)
+          .then(handleSuccess)
+          .then(handleJSON)
+          .catch(handleError);
+        function handleSuccess(response) {
+          return response.json();
+        }
+        function handleJSON(json) {
+          window.console.log(json);
+        }
+        function handleError(err) {
+          window.console.log(err);
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
