@@ -11,10 +11,10 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://YOUR_AUTH0_DOMAIN/.well-known/jwks.json`,
+    jwksUri: "https://larkintuckerllc.auth0.com/.well-known/jwks.json",
   }),
-  audience: '{YOUR_API_IDENTIFIER}',
-  issuer: 'https://YOUR_AUTH0_DOMAIN/',
+  audience: 'http://localhost:8080',
+  issuer: "https://larkintuckerllc.auth0.com/",
   algorithms: [ 'RS256' ],
 });
 
