@@ -33,6 +33,7 @@
         if (authResult && authResult.accessToken && authResult.idToken) {
           accessToken = authResult.accessToken;
           idToken = authResult.idToken;
+          window.console.log(idToken);
           enableButton();
         } else {
           window.console.log('ERROR');
