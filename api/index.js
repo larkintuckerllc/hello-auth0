@@ -20,6 +20,9 @@ const checkJwt = jwt({
 
 app.use(cors());
 
-app.get('/', checkJwt, (req, res) => res.send({ hello: 'world' }));
+app.get('/', checkJwt, (req, res) => {
+  console.log(req.user);
+  res.send({ hello: 'world' })
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
