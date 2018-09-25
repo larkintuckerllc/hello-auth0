@@ -8,26 +8,58 @@
   <button id="get">Get</button>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.0.0/polyfill.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0.0/dist/fetch.umd.min.js"></script>
+  <script src="https://cdn.auth0.com/js/auth0/9.5.1/auth0.min.js"></script> 
   <script>
     (function () {
       'use strict';
       var ENDPOINT = 'http://localhost:8080';
-      var buttonEl = document.getElementById('get');
-      buttonEl.addEventListener('click', handleClick);
-      function handleClick() {
-        window.fetch(ENDPOINT)
-          .then(handleSuccess)
-          .then(handleJSON)
-          .catch(handleError);
-        function handleSuccess(response) {
-          return response.json();
+      var auth0 = new window.auth0.WebAuth({
+        clientID: 'mXOqTlwyy2wrxfKZsTe64GIx4jZTfJLT',
+        domain: 'larkintuckerllc.auth0.com',
+        responseType: 'token id_token',
+        audience: 'http://localhost:8080',
+        redirectUri: 'http://localhost:3000',
+        scope: 'openid profile',
+      });
+      var hash = window.location.hash;
+      if (hash === '') {
+        auth0.authorize();
+        return
+      }
+      auth0.parseHash(handleParseHash);
+      function handleParseHash(err, authResult) {
+        var accessToken;
+        var idToken;
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          accessToken = authResult.accessToken;
+          idToken = authResult.idToken;
+          enableButton();
+        } else {
+          window.console.log('ERROR');
         }
-        function handleJSON(json) {
-          window.console.log(json);
-        }
-        function handleError(err) {
-          window.console.log(err);
-        }
+        function enableButton() {
+          var buttonEl = document.getElementById('get');
+          buttonEl.addEventListener('click', handleClick);
+          function handleClick() {
+            window.fetch(ENDPOINT, {
+              headers: {
+                Authorization: 'Bearer ' + accessToken
+              },
+            })
+              .then(handleSuccess)
+              .then(handleJSON)
+              .catch(handleError);
+            function handleSuccess(response) {
+              return response.json();
+            }
+            function handleJSON(json) {
+              window.console.log(json);
+            }
+            function handleError(err) {
+              window.console.log(err);
+            }
+          }
+        } 
       }
     })();
   </script>
