@@ -34,7 +34,14 @@
           accessToken = authResult.accessToken;
           idToken = authResult.idToken;
           window.console.log(idToken);
+          auth0.client.userInfo(accessToken, handleUserInfo);
           enableButton();
+          function handleUserInfo(userErr, user) {
+            if (userErr) {
+              return;
+            }
+            window.console.log(user);
+          }
         } else {
           window.console.log('ERROR');
         }
